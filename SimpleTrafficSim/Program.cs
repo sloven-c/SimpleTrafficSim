@@ -2,16 +2,17 @@
 
 namespace SimpleTrafficSim;
 
-class Program {
-    static void Main(string[] args) {
-        Raylib.InitWindow(800, 600, "Hello World");
+class Program : GameData {
+    private static void Main() {
+        Raylib.InitWindow(Resolution.width, Resolution.height, "Simple Traffic Sim");
+
+        var areas = new Areas(3);
 
         while (!Raylib.WindowShouldClose()) {
             Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.LightGray);
             
-            Raylib.ClearBackground(Color.Gray);
-            
-            Raylib.DrawText("Hello World", 12, 12, 20, Color.Red);
+            areas.Draw();
             
             Raylib.EndDrawing();
         }

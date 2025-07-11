@@ -6,6 +6,11 @@ public class Areas {
     /// </summary>
     private readonly SpawnArea[] _areas;
 
+    /// <summary>
+    /// Constructor for setting up areas
+    /// </summary>
+    /// <param name="n">number of areas to spawn</param>
+    /// <exception cref="Exception">if more areas are passed than there are defined in AreaLocation in <see cref="DataStructures"/></exception>
     public Areas(int n) {
         var values = Enum.GetValues<DataStructures.AreaLocation>();
         // maximum 4 locations allowed (NE, NW, SE, SE)

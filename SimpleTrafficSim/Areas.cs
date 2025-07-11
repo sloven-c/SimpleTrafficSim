@@ -27,7 +27,7 @@ public class Areas {
             } while (usedAreas.Contains(randomLocation));
             
             // create an area and pass the location
-            _areas[i] = new SpawnArea(randomLocation);
+            _areas[i] = new SpawnArea(randomLocation, 10);
             // prevent the said location to be used again
             usedAreas.Add(randomLocation);
         }

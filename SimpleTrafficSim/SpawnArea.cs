@@ -7,20 +7,24 @@ namespace SimpleTrafficSim;
 /// A class for SpawnArea an area at the edge(s) of the map where cars will spawn and drive off/on to/from the roads
 /// </summary>
 public class SpawnArea : GameData {
-    private const int Width = 100 * Scale;
-    private const int Height = 50 * Scale;
+    private const int Width = 100;
+    private const int Height = 50;
+    private const int SWidth = Width * Scale;
+    private const int SHeight = Height * Scale;
+    
     private int _x, _y;
     private AreaLocation Location { get; }
-    private List<Car> cars;
+    private List<Car> _cars;
 
-    public SpawnArea(AreaLocation location) {
+    public SpawnArea(AreaLocation location, int maxCars) {
         Location = location;
-        cars = [];
+        _cars = [];
         SetLocation();
+        SpawnCars(maxCars);
         
         Console.WriteLine($"Area: ({_x}, {_y}) - {Location}");
     }
-    
+
     /// <summary>
     /// Sets coordinates 
     /// </summary>
@@ -32,23 +36,48 @@ public class SpawnArea : GameData {
                 _y = 0;
                 break;
             case AreaLocation.TopRight:
-                _x = Resolution.width - Width;
+                _x = Size.width - SWidth;
                 _y = 0;
                 break;
             case AreaLocation.BottomLeft:
                 _x = 0;
-                _y = Resolution.height - Height;
+                _y = Size.height - SHeight;
                 break;
             case AreaLocation.BottomRight:
-                _x = Resolution.width - Width;
-                _y = Resolution.height - Height;
+                _x = Size.width - SWidth;
+                _y = Size.height - SHeight;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
     }
+    
+    /// <summary>
+    /// Method that attempts to spawn cars
+    /// </summary>
+    /// <param name="max">the upper limit for the amount of cars to be spawned on the spawn area</param>
+    private void SpawnCars(int max) {
+        // calculating car slots
+        var carTemplate = new Car(0, 0);
 
+        var hCarSlot = 2 * carTemplate.Buffer + carTemplate.Width;
+        var vCarSlot = 2 * carTemplate.Buffer + carTemplate.Height;
+
+        var hSlots = Width / hCarSlot;
+        var vSlots = Height / vCarSlot;
+
+        var totalSlots = hSlots * vSlots;
+        if (max > totalSlots) max = totalSlots;
+        
+        Console.WriteLine($"Max available slots for cars: {totalSlots}");
+        
+        // todo
+    }
+
+    /// <summary>
+    /// Draws that specific area
+    /// </summary>
     public void Draw() {
-        Raylib.DrawRectangle(_x, _y, Width, Height, Color.Gray);
+        Raylib.DrawRectangle(_x, _y, SWidth, SHeight, Color.Gray);
     }
 }

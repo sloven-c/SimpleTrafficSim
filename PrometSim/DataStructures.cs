@@ -1,4 +1,4 @@
-namespace SimpleTrafficSim;
+namespace PrometSim;
 
 public static class DataStructures {
     public enum AreaLocation {

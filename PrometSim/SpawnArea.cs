@@ -1,7 +1,6 @@
 using Raylib_cs;
-using static SimpleTrafficSim.DataStructures;
 
-namespace SimpleTrafficSim;
+namespace PrometSim;
 
 /// <summary>
 /// A class for SpawnArea an area at the edge(s) of the map where cars will spawn and drive off/on to/from the roads
@@ -13,10 +12,10 @@ public class SpawnArea : GameData {
     private const int SHeight = Height * Scale;
     
     private int _x, _y;
-    private AreaLocation Location { get; }
+    private DataStructures.AreaLocation Location { get; }
     private List<Car> _cars;
 
-    public SpawnArea(AreaLocation location, int maxCars) {
+    public SpawnArea(DataStructures.AreaLocation location, int maxCars) {
         Location = location;
         _cars = [];
         SetLocation();
@@ -31,19 +30,19 @@ public class SpawnArea : GameData {
     /// <exception cref="ArgumentOutOfRangeException">if location doesn't match any AreaLocation enum values</exception>
     private void SetLocation() {
         switch (Location) {
-            case AreaLocation.TopLeft:
+            case DataStructures.AreaLocation.TopLeft:
                 _x = 0;
                 _y = 0;
                 break;
-            case AreaLocation.TopRight:
+            case DataStructures.AreaLocation.TopRight:
                 _x = Size.width - SWidth;
                 _y = 0;
                 break;
-            case AreaLocation.BottomLeft:
+            case DataStructures.AreaLocation.BottomLeft:
                 _x = 0;
                 _y = Size.height - SHeight;
                 break;
-            case AreaLocation.BottomRight:
+            case DataStructures.AreaLocation.BottomRight:
                 _x = Size.width - SWidth;
                 _y = Size.height - SHeight;
                 break;

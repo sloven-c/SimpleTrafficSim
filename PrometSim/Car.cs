@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace SimpleTrafficSim;
+namespace PrometSim;
 
 public class Car(int x, int y) : GameData {
     public int Width { get; } = 13;
@@ -14,7 +14,7 @@ public class Car(int x, int y) : GameData {
     /// </summary>
     public void Draw() {
         Raylib.DrawRectangle(x, y, Width * Scale, Height * Scale, Color.Red);
-        Raylib.DrawRectangle(x-Buffer*Scale, y, Buffer * Scale, Height * Scale, Color.DarkBlue);
-        Raylib.DrawRectangle(x+Width*Scale, y, Buffer*Scale, Buffer*Scale, Color.DarkBlue);
+        // Raylib.DrawRectangle(x-Buffer*Scale, y, Buffer * Scale, Height * Scale, Color.DarkBlue);
+        // Raylib.DrawRectangle(x+Width*Scale, y, Buffer*Scale, Height*Scale, Color.DarkBlue);
     }
 }

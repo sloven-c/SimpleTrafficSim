@@ -1,6 +1,4 @@
-using static SimpleTrafficSim.DataStructures;
-
-namespace SimpleTrafficSim;
+namespace PrometSim;
 
 public class Areas {
     /// <summary>
@@ -9,17 +7,17 @@ public class Areas {
     private readonly SpawnArea[] _areas;
 
     public Areas(int n) {
-        var values = Enum.GetValues<AreaLocation>();
+        var values = Enum.GetValues<DataStructures.AreaLocation>();
         // maximum 4 locations allowed (NE, NW, SE, SE)
         if (n > values.Length) throw new Exception($"There can't be more areas than {values.Length}");
         
         var random = new Random();
         // track used location areas
-        var usedAreas = new List<AreaLocation>();
+        var usedAreas = new List<DataStructures.AreaLocation>();
         
         _areas = new SpawnArea[n];
         for (var i = 0; i < _areas.Length; i++) {
-            AreaLocation randomLocation;
+            DataStructures.AreaLocation randomLocation;
             
             // determine a random location that isn't already used
             do {
@@ -33,6 +31,9 @@ public class Areas {
         }
     }
 
+    /// <summary>
+    /// Draw all the areas
+    /// </summary>
     public void Draw() {
         foreach (var area in _areas) {
             area.Draw();

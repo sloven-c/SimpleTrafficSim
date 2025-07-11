@@ -1,4 +1,4 @@
-namespace SimpleTrafficSim;
+namespace PrometSim;
 
 public class GameData {
     /// <summary>

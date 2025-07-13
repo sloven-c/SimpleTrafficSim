@@ -6,6 +6,8 @@ public class Areas {
     /// </summary>
     private readonly SpawnArea[] _areas;
 
+    private const int CarLimit = 5;
+
     /// <summary>
     /// Constructor for setting up areas
     /// </summary>
@@ -25,7 +27,7 @@ public class Areas {
             var allowedSet = values.Except(usedAreas).ToArray();
             var randomLocation = allowedSet[random.Next(allowedSet.Length)];
             
-            _areas[i] = new SpawnArea(randomLocation, 2);
+            _areas[i] = new SpawnArea(randomLocation, CarLimit);
             // prevent the said location to be used again
             usedAreas.Add(randomLocation);
         }

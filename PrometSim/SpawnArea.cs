@@ -13,7 +13,7 @@ public class SpawnArea : GameData {
     
     private int _x, _y;
     private DataStructures.AreaLocation Location { get; }
-    private List<Car> _cars;
+    private readonly List<Car> _cars;
     private DataStructures.CarSlot[,]? _carsData;
 
     public SpawnArea(DataStructures.AreaLocation location, int maxCars) {
@@ -80,29 +80,37 @@ public class SpawnArea : GameData {
             var slot = FindCarSlot();
             if (!slot.HasValue) throw new Exception("Failed to find a free slot");
 
-            var c = new Car(slot.Value.i, slot.Value.j);
+            var cellW = (Width / hSlots) * Scale;
+            var cellH = (Height / vSlots) * Scale;
+
+            var c = new Car(_x + cellW * slot.Value.j + carTemplate.Buffer * Scale, _y + cellH * slot.Value.i + carTemplate.Buffer * Scale);
             _cars.Add(c);
             _carsData[slot.Value.i, slot.Value.j].Occupied = true;
         }
     }
 
+    /// <summary>
+    /// Tries to find the best rated parking spot
+    /// </summary>
+    /// <returns>coordinates of a parking spot, null if no spot is available</returns>
     private (int i, int j)? FindCarSlot() {
         int? priority = null;
         (int i, int j)? index = null;
         
-        for (var i = 0; i < _carsData.GetLength(0); i++) {
-            for (var j = 0; j < _carsData.GetLength(0); j++) {
+        for (var i = 0; i < _carsData!.GetLength(0); i++) {
+            for (var j = 0; j < _carsData.GetLength(1); j++) {
                 var slot = _carsData[i, j];
                 
                 if (slot.Occupied) continue;
-                // skip checking if our priority is bigger than slot's
-                if (priority.HasValue && !(priority < slot.Priority)) continue;
                 
-                priority = slot.Priority;
-                index = (i, j);
+                // skip checking if our priority is bigger than slot's
+                if (!priority.HasValue || slot.Priority < priority || slot.Priority == 0) {
+                    priority = slot.Priority;
+                    index = (i, j);
                     
-                // if we found the highest (unoccupied) priority then we needn't dig anymore
-                if (priority == 0) return index;
+                    // additional checks are made for 0 priority because it makes no sense to check other priorities if we found the best rated parking spot already
+                    if (slot.Priority == 0) return index;
+                }
             }
         }
 
@@ -134,12 +142,12 @@ public class SpawnArea : GameData {
         // we disable null check because this function should only be called from SetPriorities function which explicitly checks that _carsData is not null!
         var hMax = _carsData!.GetLength(1) - 1;
         var vMax = _carsData!.GetLength(0) - 1;
-
+        
         return Location switch {
-            DataStructures.AreaLocation.TopLeft => i + j,
-            DataStructures.AreaLocation.TopRight => i + (hMax - j),
-            DataStructures.AreaLocation.BottomLeft => (vMax - i) + j,
-            DataStructures.AreaLocation.BottomRight => (vMax - i) + (hMax - j),
+            DataStructures.AreaLocation.TopLeft => (vMax - i) + (hMax - j),
+            DataStructures.AreaLocation.TopRight => (vMax - i) + j,
+            DataStructures.AreaLocation.BottomLeft => i + (hMax - j),
+            DataStructures.AreaLocation.BottomRight => i + j,
             _ => throw new ArgumentOutOfRangeException()
         };
     }

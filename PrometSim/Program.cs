@@ -7,7 +7,6 @@ class Program : GameData {
         Raylib.InitWindow(Size.width, Size.height, "Promet Sim");
 
         var areas = new Areas(3);
-        var c = new Car(100, 100);
 
         while (!Raylib.WindowShouldClose()) {
             Raylib.BeginDrawing();

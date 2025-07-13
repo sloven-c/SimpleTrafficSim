@@ -3,6 +3,7 @@ using Raylib_cs;
 namespace PrometSim;
 
 public class Car(int x, int y) : GameData {
+    // todo might make properties into separate inheritable class idk 
     public int Width { get; } = 13;
     public int Height { get; } = 6;
     public int Buffer { get; } = 5;

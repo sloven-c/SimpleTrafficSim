@@ -1,8 +1,9 @@
+using System.Numerics;
 using Raylib_cs;
 
 namespace PrometSim;
 
-public class Car(int x, int y) : GameData {
+public class Car(Vector2 coords) : GameData {
     // todo might make properties into separate inheritable class idk 
     public int Width { get; } = 13;
     public int Height { get; } = 6;
@@ -15,7 +16,7 @@ public class Car(int x, int y) : GameData {
     /// Draws the car - todo make it an actual sprite
     /// </summary>
     public void Draw() {
-        Raylib.DrawRectangle(x, y, Width * Scale, Height * Scale, Color.Red);
+        Raylib.DrawRectangle((int)coords.X, (int)coords.Y, Width * Scale, Height * Scale, Color.Red);
         // Raylib.DrawRectangle(x-Buffer*Scale, y, Buffer * Scale, Height * Scale, Color.DarkBlue);
         // Raylib.DrawRectangle(x+Width*Scale, y, Buffer*Scale, Height*Scale, Color.DarkBlue);
     }

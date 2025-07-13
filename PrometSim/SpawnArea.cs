@@ -1,3 +1,4 @@
+using System.Numerics;
 using Raylib_cs;
 
 namespace PrometSim;
@@ -58,7 +59,7 @@ public class SpawnArea : GameData {
     /// <param name="max">the upper limit for the amount of cars to be spawned on the spawn area</param>
     private void SpawnCars(int max) {
         // calculating car slots
-        var carTemplate = new Car(0, 0);
+        var carTemplate = new Car(new Vector2(0, 0));
 
         var hCarSlot = 2 * carTemplate.Buffer + carTemplate.Width;
         var vCarSlot = 2 * carTemplate.Buffer + carTemplate.Height;
@@ -83,7 +84,7 @@ public class SpawnArea : GameData {
             var cellW = (Width / hSlots) * Scale;
             var cellH = (Height / vSlots) * Scale;
 
-            var c = new Car(_x + cellW * slot.Value.j + carTemplate.Buffer * Scale, _y + cellH * slot.Value.i + carTemplate.Buffer * Scale);
+            var c = new Car(new Vector2(_x + cellW * slot.Value.j + carTemplate.Buffer * Scale, _y + cellH * slot.Value.i + carTemplate.Buffer * Scale));
             _cars.Add(c);
             _carsData[slot.Value.i, slot.Value.j].Occupied = true;
         }

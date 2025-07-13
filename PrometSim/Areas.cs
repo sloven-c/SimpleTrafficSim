@@ -22,15 +22,10 @@ public class Areas {
         
         _areas = new SpawnArea[n];
         for (var i = 0; i < _areas.Length; i++) {
-            DataStructures.AreaLocation randomLocation;
+            var allowedSet = values.Except(usedAreas).ToArray();
+            var randomLocation = allowedSet[random.Next(allowedSet.Length)];
             
-            // determine a random location that isn't already used
-            do {
-                randomLocation = values[random.Next(values.Length)];
-            } while (usedAreas.Contains(randomLocation));
-            
-            // create an area and pass the location
-            _areas[i] = new SpawnArea(randomLocation, 10);
+            _areas[i] = new SpawnArea(randomLocation, 2);
             // prevent the said location to be used again
             usedAreas.Add(randomLocation);
         }

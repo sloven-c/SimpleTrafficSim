@@ -14,7 +14,6 @@ class Program : GameData {
             Raylib.ClearBackground(Color.White);
             
             areas.Draw();
-            c.Draw();
             
             Raylib.EndDrawing();
         }

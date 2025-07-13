@@ -8,6 +8,7 @@ public class Car(int x, int y) : GameData {
     public int Buffer { get; } = 5;
     private int _speed = 0; // dynamically controlled - physics engine
     private int _fuel = 85; // depletes as we drive
+    private SpawnArea? _destination; // the destination car wishes to reach
 
     /// <summary>
     /// Draws the car - todo make it an actual sprite

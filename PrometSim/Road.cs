@@ -4,6 +4,8 @@ using Raylib_cs;
 namespace PrometSim;
 
 public class Road(Vector2 startPoint) {
+    // get thickness based on car size - height * x
+    private const float RoadThickness = 10f;
     private Vector2? _endPoint;
 
     public bool Confirmed() {
@@ -14,9 +16,12 @@ public class Road(Vector2 startPoint) {
         _endPoint = endPoint;
     }
 
+    /// <summary>
+    ///     Draws the road - if the road is not completed then the 2nd coordinate is mouse cursor
+    /// </summary>
     public void Draw() {
+        // todo resizing will have to be implemented here as well
         var pos = Raylib.GetMousePosition();
-        Raylib.DrawLine((int)startPoint.X, (int)startPoint.Y, (int)(_endPoint?.X ?? pos.X),
-            (int)(_endPoint?.Y ?? pos.Y), Color.Black);
+        Raylib.DrawLineEx(startPoint, _endPoint ?? pos, RoadThickness * GameData.Scale, Color.Black);
     }
 }

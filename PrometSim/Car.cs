@@ -3,21 +3,22 @@ using Raylib_cs;
 
 namespace PrometSim;
 
-public class Car(Vector2 coords) : GameData {
-    // todo might make properties into separate inheritable class idk 
-    public int Width { get; } = 13;
-    public int Height { get; } = 6;
-    public int Buffer { get; } = 5;
-    private int _speed = 0; // dynamically controlled - physics engine
-    private int _fuel = 85; // depletes as we drive
+public class Car(SpawnArea parent, (int w, int h) cell, (int i, int j) slot)
+    : CarData {
     private SpawnArea? _destination; // the destination car wishes to reach
+    private int _fuel = 85; // depletes as we drive
+    private int _speed = 0; // dynamically controlled - physics engine
 
     /// <summary>
-    /// Draws the car - todo make it an actual sprite
+    ///     Draws the car - todo make it an actual sprite
     /// </summary>
     public void Draw() {
-        Raylib.DrawRectangle((int)coords.X, (int)coords.Y, Width * Scale, Height * Scale, Color.Red);
-        // Raylib.DrawRectangle(x-Buffer*Scale, y, Buffer * Scale, Height * Scale, Color.DarkBlue);
-        // Raylib.DrawRectangle(x+Width*Scale, y, Buffer*Scale, Height*Scale, Color.DarkBlue);
+        var x = parent.Location.X + cell.w * slot.j + CarBuffer * GameData.Scale;
+        var y = parent.Location.Y + cell.h * slot.i + CarBuffer * GameData.Scale;
+        var calculatedLocation = new Vector2(x, y);
+
+        var rect = new Rectangle(calculatedLocation, CarWidth * GameData.Scale, CarHeight * GameData.Scale);
+        Raylib.DrawRectangleRec(rect, Color.DarkBlue);
+        // Raylib.DrawRectangle((int)parent.X, (int)parent.Y, Width * Scale, Height * Scale, Color.DarkBlue);
     }
 }

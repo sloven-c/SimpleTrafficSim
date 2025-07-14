@@ -2,7 +2,7 @@ namespace PrometSim;
 
 public static class DataStructures {
     /// <summary>
-    /// Stores all possible area locations
+    ///     Stores all possible area locations
     /// </summary>
     public enum AreaLocation {
         TopLeft,
@@ -12,10 +12,10 @@ public static class DataStructures {
     }
 
     public struct CarSlot {
-        public int Priority { get; set; } = 0;
-        public bool Occupied { get; set; } = false;
-
         public CarSlot() {
         }
+
+        public int Priority { get; set; } = 0;
+        public bool Occupied { get; set; } = false;
     }
 }

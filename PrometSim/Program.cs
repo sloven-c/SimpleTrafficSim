@@ -1,4 +1,7 @@
-﻿using Raylib_cs;
+﻿using PrometSim.AreaStructures;
+using PrometSim.RoadStructures;
+using PrometSim.Structures;
+using Raylib_cs;
 using Color = Raylib_cs.Color;
 
 namespace PrometSim;

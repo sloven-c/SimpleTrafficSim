@@ -1,4 +1,4 @@
-namespace PrometSim;
+namespace PrometSim.CarStructures;
 
 public class CarData {
     protected int CarWidth => 13;

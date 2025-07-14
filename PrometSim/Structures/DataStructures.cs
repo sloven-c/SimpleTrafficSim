@@ -1,4 +1,4 @@
-namespace PrometSim;
+namespace PrometSim.Structures;
 
 public static class DataStructures {
     /// <summary>
@@ -9,6 +9,11 @@ public static class DataStructures {
         TopRight,
         BottomLeft,
         BottomRight
+    }
+
+    public enum RoadColor {
+        Default,
+        Selected
     }
 
     public struct CarSlot {

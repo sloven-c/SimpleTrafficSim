@@ -1,4 +1,6 @@
-namespace PrometSim;
+using PrometSim.Structures;
+
+namespace PrometSim.AreaStructures;
 
 public class Areas {
     private const int CarLimit = 2;

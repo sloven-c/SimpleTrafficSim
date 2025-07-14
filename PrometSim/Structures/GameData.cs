@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace PrometSim;
+namespace PrometSim.Structures;
 
 public static class GameData {
     public const int Scale = 6;

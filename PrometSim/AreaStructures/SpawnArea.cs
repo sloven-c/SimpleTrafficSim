@@ -1,8 +1,10 @@
 using System.Numerics;
+using PrometSim.CarStructures;
+using PrometSim.Structures;
 using Raylib_cs;
-using static PrometSim.GameData;
+using static PrometSim.Structures.GameData;
 
-namespace PrometSim;
+namespace PrometSim.AreaStructures;
 
 /// <summary>
 ///     A class for SpawnArea where cars will spawn and drive off/onto

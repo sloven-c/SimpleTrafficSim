@@ -1,41 +1,60 @@
 using System.Numerics;
+using PrometSim.Structures;
 using Raylib_cs;
 
-namespace PrometSim;
+namespace PrometSim.RoadStructures;
 
 public class RoadManager : RoadData {
+    private const float Buffer = RoadThickness * GameData.Scale / 2f;
+
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
-    private bool _canAddRoad = true;
+    private int? _selectedRoad;
+    private bool _trackMode;
 
     private void AddRoad(Vector2 point) {
-        if (!_canAddRoad) return;
-
-        _canAddRoad = false;
         // we check if the last road needs to be finished (end point needing to be set)
         if (GetLastIndex() is int index && !_roads[index].EndPoint.HasValue) _roads[index].ConfirmRoad(point);
         _roads.Add(new Road(point));
-
-        _canAddRoad = true;
     }
 
-    private void DeleteRoad(Vector2 pos) {
+    private void TrackRoad(Vector2 pos) {
+        if (!_trackMode) return;
+        
+        DefaultRoadColor();
+        _selectedRoad = null;
+        
         for (var i = 0; i < _roads.Count; i++) {
             if (!_roads[i].EndPoint.HasValue) continue;
 
             if (CursorOnRoad(_roads[i].StartPoint, pos, _roads[i].EndPoint!.Value)) {
-                _roads.RemoveAt(i);
+                _roads[i].SetColor(DataStructures.RoadColor.Selected);
+                _selectedRoad = i;
                 break;
             }
         }
     }
 
-    private bool CursorOnRoad(Vector2 start, Vector2 cursor, Vector2 end) {
+    private void DefaultRoadColor() {
+        foreach (var road in _roads) road.SetColor(DataStructures.RoadColor.Default);
+    }
+
+    private static bool CursorOnRoad(Vector2 start, Vector2 cursor, Vector2 end) {
+        var minX = Math.Min(start.X, end.X) - Buffer;
+        var maxX = Math.Max(start.X, end.X) + Buffer;
+        var minY = Math.Min(start.Y, end.Y) - Buffer;
+        var maxY = Math.Max(start.Y, end.Y) + Buffer;
+
+        if (!(cursor.X >= minX && cursor.X <= maxX && cursor.Y >= minY && cursor.Y <= maxY)) return false;
+
         var sc = new Vector2(start.X - cursor.X, start.Y - cursor.Y);
         var se = new Vector2(start.X - end.X, start.Y - end.Y);
 
-        var prod = Math.Abs(sc.X * sc.Y - se.Y * se.X);
-        return prod <= RoadThickness / 2f;
+        var prod = Math.Abs(sc.X * se.Y - sc.Y * se.X);
+        var roadlength = Math.Sqrt((end.X - start.X) * (end.X - start.X) + (end.Y - start.Y) * (end.Y - start.Y));
+        var threshold = roadlength * Buffer;
+
+        return prod <= threshold;
     }
 
     public void Draw() {
@@ -44,15 +63,32 @@ public class RoadManager : RoadData {
 
     public void InputHandler() {
         var mousePos = Raylib.GetMousePosition();
+        TrackRoad(mousePos);
 
         if (Raylib.IsKeyDown(KeyboardKey.C))
             _roads.Clear();
-        else if (Raylib.IsKeyDown(KeyboardKey.D))
-            DeleteRoad(mousePos);
+        if (Raylib.IsKeyPressed(KeyboardKey.D)) {
+            _trackMode = !_trackMode;
+            if (!_trackMode) {
+                DefaultRoadColor();
+                _selectedRoad = null;
+            }
+        }
 
-        if (Raylib.IsMouseButtonReleased(MouseButton.Left))
-            AddRoad(mousePos);
-        else if (Raylib.IsMouseButtonReleased(MouseButton.Right) && GetLastIndex() is int index) _roads.RemoveAt(index);
+        if (Raylib.IsMouseButtonReleased(MouseButton.Left)) {
+            if (_trackMode) {
+                if (_selectedRoad == null) return;
+                _roads.RemoveAt(_selectedRoad.Value);
+                _selectedRoad = null;
+            }
+            else {
+                AddRoad(mousePos);
+            }
+        }
+
+        else if (Raylib.IsMouseButtonReleased(MouseButton.Right) && GetLastIndex() is int index) {
+            _roads.RemoveAt(index);
+        }
     }
 
     private int? GetLastIndex() {

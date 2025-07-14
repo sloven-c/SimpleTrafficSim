@@ -1,7 +1,7 @@
 namespace PrometSim;
 
 public class Areas {
-    private const int CarLimit = 12;
+    private const int CarLimit = 2;
 
     /// <summary>
     ///     stores an array of <see cref="SpawnArea" />

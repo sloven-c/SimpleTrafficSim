@@ -5,7 +5,7 @@ using static PrometSim.GameData;
 namespace PrometSim;
 
 /// <summary>
-///     A class for SpawnArea an area at the edge(s) of the map where cars will spawn and drive off/on to/from the roads
+///     A class for SpawnArea where cars will spawn and drive off/onto
 /// </summary>
 public class SpawnArea : CarData, IDisposable {
     private const int Width = 100;
@@ -29,10 +29,17 @@ public class SpawnArea : CarData, IDisposable {
 
     private DataStructures.AreaLocation AreaLoc { get; }
 
+    /// <summary>
+    ///     Dispose class
+    /// </summary>
     public void Dispose() {
         SizeChanged -= OnSizeChanged;
     }
 
+    /// <summary>
+    ///     If window size gets changed then we must recalculate the coordinates of spawn area
+    /// </summary>
+    /// <param name="obj"></param>
     private void OnSizeChanged((int width, int height) obj) {
         SetLocation();
     }

@@ -3,17 +3,13 @@ using Raylib_cs;
 
 namespace PrometSim;
 
-public class Road(Vector2 startPoint) {
-    // get thickness based on car size - height * x
-    private const float RoadThickness = 10f;
-    private Vector2? _endPoint;
-
-    public bool Confirmed() {
-        return _endPoint.HasValue;
-    }
+public class Road(Vector2 startPoint) : RoadData {
+    // todo get thickness based on car size - height * x
+    public Vector2 StartPoint { get; } = startPoint;
+    public Vector2? EndPoint { get; private set; }
 
     public void ConfirmRoad(Vector2 endPoint) {
-        _endPoint = endPoint;
+        EndPoint = endPoint;
     }
 
     /// <summary>
@@ -22,6 +18,6 @@ public class Road(Vector2 startPoint) {
     public void Draw() {
         // todo resizing will have to be implemented here as well
         var pos = Raylib.GetMousePosition();
-        Raylib.DrawLineEx(startPoint, _endPoint ?? pos, RoadThickness * GameData.Scale, Color.Black);
+        Raylib.DrawLineEx(StartPoint, EndPoint ?? pos, RoadThickness * GameData.Scale, Color.Black);
     }
 }

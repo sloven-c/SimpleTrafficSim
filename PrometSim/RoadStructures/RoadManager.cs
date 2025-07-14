@@ -6,6 +6,7 @@ namespace PrometSim.RoadStructures;
 
 public class RoadManager : RoadData {
     private const float Buffer = RoadThickness * GameData.Scale / 2f;
+    private static float MinDistance => GameData.Size.width / 25f;
 
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
@@ -14,7 +15,18 @@ public class RoadManager : RoadData {
 
     private void AddRoad(Vector2 point) {
         // we check if the last road needs to be finished (end point needing to be set)
-        if (GetLastIndex() is int index && !_roads[index].EndPoint.HasValue) _roads[index].ConfirmRoad(point);
+        // todo here we must check if distance is long
+        if (GetLastIndex() is int index && !_roads[index].EndPoint.HasValue) {
+            if (Vector2.Distance(_roads[index].StartPoint, point) >= MinDistance) { // minimum distance
+                _roads[index].ConfirmRoad(point);
+            }
+            // if the road can't be finished new road can not be built
+            else {
+                return;
+            }
+        }
+        
+        // immediately add new road
         _roads.Add(new Road(point));
     }
 

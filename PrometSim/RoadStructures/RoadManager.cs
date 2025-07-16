@@ -6,36 +6,34 @@ namespace PrometSim.RoadStructures;
 
 public class RoadManager : RoadData {
     private const float Buffer = RoadThickness * GameData.Scale / 2f;
-    private static float MinDistance => GameData.Size.width / 25f;
 
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
     private int? _selectedRoad;
     private bool _trackMode;
+    private static float MinDistance => GameData.Size.width / 25f;
 
     private void AddRoad(Vector2 point) {
         // we check if the last road needs to be finished (end point needing to be set)
         // todo here we must check if distance is long
         if (GetLastIndex() is int index && !_roads[index].EndPoint.HasValue) {
-            if (Vector2.Distance(_roads[index].StartPoint, point) >= MinDistance) { // minimum distance
+            if (Vector2.Distance(_roads[index].StartPoint, point) >= MinDistance) // minimum distance
                 _roads[index].ConfirmRoad(point);
-            }
             // if the road can't be finished new road can not be built
-            else {
+            else
                 return;
-            }
         }
-        
+
         // immediately add new road
         _roads.Add(new Road(point));
     }
 
     private void TrackRoad(Vector2 pos) {
         if (!_trackMode) return;
-        
+
         DefaultRoadColor();
         _selectedRoad = null;
-        
+
         for (var i = 0; i < _roads.Count; i++) {
             if (!_roads[i].EndPoint.HasValue) continue;
 
@@ -77,9 +75,10 @@ public class RoadManager : RoadData {
         var mousePos = Raylib.GetMousePosition();
         TrackRoad(mousePos);
 
-        if (Raylib.IsKeyDown(KeyboardKey.C))
+        if (Raylib.IsKeyPressed(KeyboardKey.C)) {
             _roads.Clear();
-        if (Raylib.IsKeyPressed(KeyboardKey.D)) {
+        }
+        else if (Raylib.IsKeyPressed(KeyboardKey.D)) {
             _trackMode = !_trackMode;
             if (!_trackMode) {
                 DefaultRoadColor();
@@ -97,7 +96,6 @@ public class RoadManager : RoadData {
                 AddRoad(mousePos);
             }
         }
-
         else if (Raylib.IsMouseButtonReleased(MouseButton.Right) && GetLastIndex() is int index) {
             _roads.RemoveAt(index);
         }

@@ -17,6 +17,8 @@ internal class Program {
         var areas = new Areas(3);
         var roadMan = new RoadManager();
 
+        List<IDrawable> drawables = [areas, roadMan];
+
         while (!Raylib.WindowShouldClose()) {
             WindowSizeChanged();
 
@@ -25,8 +27,9 @@ internal class Program {
 
             roadMan.InputHandler();
 
-            roadMan.Draw();
-            areas.Draw();
+            foreach (var drawable in drawables) {
+                drawable.Draw();
+            }
 
             Raylib.EndDrawing();
         }

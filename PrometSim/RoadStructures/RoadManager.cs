@@ -4,24 +4,44 @@ using Raylib_cs;
 
 namespace PrometSim.RoadStructures;
 
-public class RoadManager : RoadData {
+public class RoadManager : RoadData, IDrawable {
     private const float Buffer = RoadThickness * GameData.Scale / 2f;
+    private readonly List<Node> _nodes = [];
 
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
+
     private int? _selectedRoad;
     private bool _trackMode;
     private static float MinDistance => GameData.Size.width / 25f;
 
+    public void Draw() {
+        foreach (var node in _nodes) {
+            node.validation = CanCreateNode(node.Location, node)
+                ? DataStructures.NodeValidation.Valid
+                : DataStructures.NodeValidation.Invalid;
+            node.Draw();
+        }
+
+        foreach (var road in _roads) road.Draw();
+    }
+
     private void AddRoad(Vector2 point) {
         // we check if the last road needs to be finished (end point needing to be set)
-        // todo here we must check if distance is long
         if (GetLastIndex() is int index && !_roads[index].EndPoint.HasValue) {
-            if (Vector2.Distance(_roads[index].StartPoint, point) >= MinDistance) // minimum distance
+            if (Vector2.Distance(_roads[index].StartPoint, point) >= MinDistance) {
+                if (!CanCreateNode(point, null)) return;
+                // todo improve it by creating visual feedback if node can be added
+                _nodes.Add(new Node(point));
+
+                // what about spawn area? is it a node?
+                // todo think ^
                 _roads[index].ConfirmRoad(point);
+            }
             // if the road can't be finished new road can not be built
-            else
+            else {
                 return;
+            }
         }
 
         // immediately add new road
@@ -45,6 +65,17 @@ public class RoadManager : RoadData {
         }
     }
 
+    private bool CanCreateNode(Vector2 location, Node? nodeToSkip) {
+        foreach (var node in _nodes) {
+            if (nodeToSkip != null && nodeToSkip == node) continue;
+
+            if (Vector2.Distance(node.Location, location) < MinDistance)
+                return false;
+        }
+
+        return true;
+    }
+
     private void DefaultRoadColor() {
         foreach (var road in _roads) road.SetColor(DataStructures.RoadColor.Default);
     }
@@ -65,10 +96,6 @@ public class RoadManager : RoadData {
         var threshold = roadlength * Buffer;
 
         return prod <= threshold;
-    }
-
-    public void Draw() {
-        foreach (var road in _roads) road.Draw();
     }
 
     public void InputHandler() {

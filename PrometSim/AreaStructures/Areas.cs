@@ -2,7 +2,7 @@ using PrometSim.Structures;
 
 namespace PrometSim.AreaStructures;
 
-public class Areas {
+public class Areas : IDrawable {
     private const int CarLimit = 2;
 
     /// <summary>

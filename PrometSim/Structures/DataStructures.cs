@@ -10,7 +10,12 @@ public static class DataStructures {
         BottomLeft,
         BottomRight
     }
-    
+
+    public enum NodeValidation {
+        Valid,
+        Invalid
+    }
+
     public enum RoadColor {
         Default,
         Selected

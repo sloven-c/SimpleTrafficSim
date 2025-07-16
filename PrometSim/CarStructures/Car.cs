@@ -6,7 +6,7 @@ using Raylib_cs;
 namespace PrometSim.CarStructures;
 
 public class Car(SpawnArea parent, (int w, int h) cell, (int i, int j) slot)
-    : CarData {
+    : CarData, IDrawable {
     private SpawnArea? _destination; // the destination car wishes to reach
     private int _fuel = 85; // depletes as we drive
     private int _speed = 0; // dynamically controlled - physics engine

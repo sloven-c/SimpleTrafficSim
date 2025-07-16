@@ -9,7 +9,7 @@ namespace PrometSim.AreaStructures;
 /// <summary>
 ///     A class for SpawnArea where cars will spawn and drive off/onto
 /// </summary>
-public class SpawnArea : CarData, IDisposable {
+public class SpawnArea : CarData, IDisposable, IDrawable {
     private const int Width = 100;
     private const int Height = 50;
     private const int SWidth = Width * Scale;
@@ -36,6 +36,15 @@ public class SpawnArea : CarData, IDisposable {
     /// </summary>
     public void Dispose() {
         SizeChanged -= OnSizeChanged;
+    }
+
+    /// <summary>
+    ///     Draws that specific area
+    /// </summary>
+    public void Draw() {
+        var rect = new Rectangle(Location, SWidth, SHeight);
+        Raylib.DrawRectangleRec(rect, Color.Gray);
+        DrawCars();
     }
 
     /// <summary>
@@ -165,15 +174,6 @@ public class SpawnArea : CarData, IDisposable {
             DataStructures.AreaLocation.BottomRight => i + j,
             _ => throw new ArgumentOutOfRangeException()
         };
-    }
-
-    /// <summary>
-    ///     Draws that specific area
-    /// </summary>
-    public void Draw() {
-        var rect = new Rectangle(Location, SWidth, SHeight);
-        Raylib.DrawRectangleRec(rect, Color.Gray);
-        DrawCars();
     }
 
     private void DrawCars() {

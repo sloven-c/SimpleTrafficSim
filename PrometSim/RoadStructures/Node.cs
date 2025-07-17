@@ -19,7 +19,7 @@ public class Node(Vector2 location) : RoadData, IDrawable {
 
         // draws the node
         // how to determine node color dynamically
-        Raylib.DrawCircleV(Location, RoadThickness / 2f,
+        Raylib.DrawCircleV(Location, (float)(GameData.Scale * RoadThickness / Math.Sqrt(2)),
             validation.Value == DataStructures.NodeValidation.Valid ? Color.Green : Color.Red);
 
         validation = null;

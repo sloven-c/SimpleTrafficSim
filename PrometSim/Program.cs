@@ -27,9 +27,12 @@ internal class Program {
 
             roadMan.InputHandler();
 
-            foreach (var drawable in drawables) {
+            /*foreach (var drawable in drawables) {
                 drawable.Draw();
-            }
+            }*/
+
+            roadMan.Draw();
+            areas.Draw();
 
             Raylib.EndDrawing();
         }

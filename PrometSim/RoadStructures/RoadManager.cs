@@ -16,14 +16,14 @@ public class RoadManager : RoadData, IDrawable {
     private static float MinDistance => GameData.Size.width / 25f;
 
     public void Draw() {
-        foreach (var node in _nodes) {
+        foreach (var road in _roads) road.Draw();
+
+        /*foreach (var node in _nodes) {
             node.validation = CanCreateNode(node.Location, node)
                 ? DataStructures.NodeValidation.Valid
                 : DataStructures.NodeValidation.Invalid;
             node.Draw();
-        }
-
-        foreach (var road in _roads) road.Draw();
+        }*/
     }
 
     private void AddRoad(Vector2 point) {
@@ -65,6 +65,11 @@ public class RoadManager : RoadData, IDrawable {
         }
     }
 
+    private void DeleteAllRoads() {
+        _roads.Clear();
+        _nodes.Clear();
+    }
+
     private bool CanCreateNode(Vector2 location, Node? nodeToSkip) {
         foreach (var node in _nodes) {
             if (nodeToSkip != null && nodeToSkip == node) continue;
@@ -103,7 +108,7 @@ public class RoadManager : RoadData, IDrawable {
         TrackRoad(mousePos);
 
         if (Raylib.IsKeyPressed(KeyboardKey.C)) {
-            _roads.Clear();
+            DeleteAllRoads();
         }
         else if (Raylib.IsKeyPressed(KeyboardKey.D)) {
             _trackMode = !_trackMode;

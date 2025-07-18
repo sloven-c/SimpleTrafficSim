@@ -11,19 +11,29 @@ public class RoadManager : RoadData, IDrawable {
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
 
+    // test mode todo remove
+    private readonly List<Vector2> _bezierPoints = [];
+    private bool _deleteMode;
+    private bool _nodeMode;
+
     private int? _selectedRoad;
-    private bool _trackMode;
+    private bool _testMode;
+
     private static float MinDistance => GameData.Size.width / 25f;
 
     public void Draw() {
+        foreach (var coord in _bezierPoints) {
+            Raylib.DrawCircleV(coord, 5f, Color.Black);
+        }
         foreach (var road in _roads) road.Draw();
 
-        /*foreach (var node in _nodes) {
+        if (!_nodeMode) return;
+        foreach (var node in _nodes) {
             node.validation = CanCreateNode(node.Location, node)
                 ? DataStructures.NodeValidation.Valid
                 : DataStructures.NodeValidation.Invalid;
             node.Draw();
-        }*/
+        }
     }
 
     private void AddRoad(Vector2 point) {
@@ -49,7 +59,7 @@ public class RoadManager : RoadData, IDrawable {
     }
 
     private void TrackRoad(Vector2 pos) {
-        if (!_trackMode) return;
+        if (!_deleteMode) return;
 
         DefaultRoadColor();
         _selectedRoad = null;
@@ -68,6 +78,19 @@ public class RoadManager : RoadData, IDrawable {
     private void DeleteAllRoads() {
         _roads.Clear();
         _nodes.Clear();
+    }
+
+    private void TestFunc() {
+        if (!_testMode) return;
+
+        if (_bezierPoints.Count == 3) {
+            Raylib.DrawSplineBezierQuadratic(_bezierPoints.ToArray(), 3, 1f, Color.Black);
+            return;
+        }
+
+        if (Raylib.IsMouseButtonReleased(MouseButton.Left)) {
+            _bezierPoints.Add(Raylib.GetMousePosition());
+        }
     }
 
     private bool CanCreateNode(Vector2 location, Node? nodeToSkip) {
@@ -106,20 +129,28 @@ public class RoadManager : RoadData, IDrawable {
     public void InputHandler() {
         var mousePos = Raylib.GetMousePosition();
         TrackRoad(mousePos);
+        TestFunc();
 
-        if (Raylib.IsKeyPressed(KeyboardKey.C)) {
+        if (Raylib.IsKeyReleased(KeyboardKey.C)) {
             DeleteAllRoads();
         }
-        else if (Raylib.IsKeyPressed(KeyboardKey.D)) {
-            _trackMode = !_trackMode;
-            if (!_trackMode) {
+        else if (Raylib.IsKeyReleased(KeyboardKey.D)) {
+            _deleteMode = !_deleteMode;
+            if (!_deleteMode) {
                 DefaultRoadColor();
                 _selectedRoad = null;
             }
         }
+        else if (Raylib.IsKeyReleased(KeyboardKey.N)) {
+            _nodeMode = !_nodeMode;
+        }
+        else if (Raylib.IsKeyReleased(KeyboardKey.T)) {
+            _testMode = !_testMode;
+        }
 
         if (Raylib.IsMouseButtonReleased(MouseButton.Left)) {
-            if (_trackMode) {
+            if (_testMode) return;
+            if (_deleteMode) {
                 if (_selectedRoad == null) return;
                 _roads.RemoveAt(_selectedRoad.Value);
                 _selectedRoad = null;

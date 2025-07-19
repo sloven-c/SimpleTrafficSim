@@ -5,11 +5,11 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>PrometSim</RootNamespace>
+        <RootNamespace>RoadBuilderPrototype</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Raylib-cs" Version="7.0.1" />
+        <PackageReference Include="Raylib-cs" Version="7.0.1"/>
     </ItemGroup>
 
 </Project>

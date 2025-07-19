@@ -1,10 +1,11 @@
 using System.Numerics;
-using PrometSim.CarStructures;
-using PrometSim.Structures;
 using Raylib_cs;
-using static PrometSim.Structures.GameData;
+using RoadBuilderPrototype.CarStructures;
+using RoadBuilderPrototype.Structures;
+using Color = Raylib_cs.Color;
+using Rectangle = Raylib_cs.Rectangle;
 
-namespace PrometSim.AreaStructures;
+namespace RoadBuilderPrototype.AreaStructures;
 
 /// <summary>
 ///     A class for SpawnArea where cars will spawn and drive off/onto
@@ -12,8 +13,8 @@ namespace PrometSim.AreaStructures;
 public class SpawnArea : CarData, IDisposable, IDrawable {
     private const int Width = 100;
     private const int Height = 50;
-    private const int SWidth = Width * Scale;
-    private const int SHeight = Height * Scale;
+    private const int SWidth = Width * GameData.Scale;
+    private const int SHeight = Height * GameData.Scale;
     private readonly List<Car> _cars;
     private DataStructures.CarSlot[,]? _carsData;
 
@@ -22,7 +23,7 @@ public class SpawnArea : CarData, IDisposable, IDrawable {
         _cars = [];
         SetLocation();
         SpawnCars(maxCars);
-        SizeChanged += OnSizeChanged;
+        GameData.SizeChanged += OnSizeChanged;
 
         Console.WriteLine($"Area: {Location} - {AreaLoc}");
     }
@@ -35,7 +36,7 @@ public class SpawnArea : CarData, IDisposable, IDrawable {
     ///     Dispose class
     /// </summary>
     public void Dispose() {
-        SizeChanged -= OnSizeChanged;
+        GameData.SizeChanged -= OnSizeChanged;
     }
 
     /// <summary>
@@ -65,13 +66,13 @@ public class SpawnArea : CarData, IDisposable, IDrawable {
                 Location = new Vector2(0, 0);
                 break;
             case DataStructures.AreaLocation.TopRight:
-                Location = new Vector2(Size.width - SWidth, 0);
+                Location = new Vector2(GameData.Size.width - SWidth, 0);
                 break;
             case DataStructures.AreaLocation.BottomLeft:
-                Location = new Vector2(0, Size.height - SHeight);
+                Location = new Vector2(0, GameData.Size.height - SHeight);
                 break;
             case DataStructures.AreaLocation.BottomRight:
-                Location = new Vector2(Size.width - SWidth, Size.height - SHeight);
+                Location = new Vector2(GameData.Size.width - SWidth, GameData.Size.height - SHeight);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -104,7 +105,7 @@ public class SpawnArea : CarData, IDisposable, IDrawable {
             var slot = FindCarSlot();
             if (!slot.HasValue) throw new Exception("Failed to find a free slot");
 
-            (int w, int h) cell = (Width / hSlots * Scale, Height / vSlots * Scale);
+            (int w, int h) cell = (Width / hSlots * GameData.Scale, Height / vSlots * GameData.Scale);
 
             // old implementation
             /*var c = new Car(new Vector2(Location.X + cellW * slot.Value.j + carTemplate.Buffer * Scale,

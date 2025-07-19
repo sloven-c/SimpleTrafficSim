@@ -1,14 +1,11 @@
 using System.Numerics;
-using PrometSim.Structures;
 using Raylib_cs;
+using RoadBuilderPrototype.Structures;
 
-namespace PrometSim.RoadStructures;
+namespace RoadBuilderPrototype.RoadStructures;
 
 public class RoadManager : RoadData, IDrawable {
     private const float Buffer = RoadThickness * GameData.Scale / 2f;
-
-    // test mode todo remove
-    private readonly List<Vector2> _bezierPoints = [];
     private readonly List<Node> _nodes = [];
 
     // todo given so many classes use draw ponder if we could use something with interfaces
@@ -76,15 +73,6 @@ public class RoadManager : RoadData, IDrawable {
         _nodes.Clear();
     }
 
-    private void TestFunc() {
-        if (_bezierPoints.Count == 3) {
-            Raylib.DrawSplineBezierQuadratic(_bezierPoints.ToArray(), 3, 1f, Color.Black);
-            return;
-        }
-
-        if (Raylib.IsMouseButtonReleased(MouseButton.Left)) _bezierPoints.Add(Raylib.GetMousePosition());
-    }
-
     private bool CanCreateNode(Vector2 location, Node? nodeToSkip) {
         foreach (var node in _nodes) {
             if (nodeToSkip != null && nodeToSkip == node) continue;
@@ -121,7 +109,6 @@ public class RoadManager : RoadData, IDrawable {
     public void InputHandler() {
         var mousePos = Raylib.GetMousePosition();
         TrackRoad(mousePos);
-        TestFunc();
 
         if (Raylib.IsKeyReleased(KeyboardKey.C)) {
             DeleteAllRoads();

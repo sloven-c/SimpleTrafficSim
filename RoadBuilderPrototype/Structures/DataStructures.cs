@@ -1,4 +1,4 @@
-namespace PrometSim.Structures;
+namespace RoadBuilderPrototype.Structures;
 
 public static class DataStructures {
     /// <summary>

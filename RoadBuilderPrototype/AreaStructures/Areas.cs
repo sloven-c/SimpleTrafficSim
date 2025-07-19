@@ -1,6 +1,6 @@
-using PrometSim.Structures;
+using RoadBuilderPrototype.Structures;
 
-namespace PrometSim.AreaStructures;
+namespace RoadBuilderPrototype.AreaStructures;
 
 public class Areas : IDrawable {
     private const int CarLimit = 2;

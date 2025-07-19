@@ -1,6 +1,6 @@
 using Raylib_cs;
 
-namespace PrometSim.Structures;
+namespace RoadBuilderPrototype.Structures;
 
 public static class GameData {
     public const int Scale = 6;

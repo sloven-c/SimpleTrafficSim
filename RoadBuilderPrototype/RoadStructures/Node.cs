@@ -1,8 +1,8 @@
 using System.Numerics;
-using PrometSim.Structures;
 using Raylib_cs;
+using RoadBuilderPrototype.Structures;
 
-namespace PrometSim.RoadStructures;
+namespace RoadBuilderPrototype.RoadStructures;
 
 /// <summary>
 ///     Class structure that is present in the intersections and in the roads ends

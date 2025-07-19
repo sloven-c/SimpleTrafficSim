@@ -1,8 +1,8 @@
 using System.Numerics;
-using PrometSim.Structures;
 using Raylib_cs;
+using RoadBuilderPrototype.Structures;
 
-namespace PrometSim.RoadStructures;
+namespace RoadBuilderPrototype.RoadStructures;
 
 public class Road(Vector2 startPoint) : RoadData, IDrawable {
     private Color _color = Color.Black;

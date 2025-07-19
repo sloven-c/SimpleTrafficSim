@@ -1,4 +1,4 @@
-namespace PrometSim.RoadStructures;
+namespace RoadBuilderPrototype.RoadStructures;
 
 /// <summary>
 ///     Class that contains static road data - might have to modify or make it less awkward

@@ -1,9 +1,9 @@
 using System.Numerics;
-using PrometSim.AreaStructures;
-using PrometSim.Structures;
 using Raylib_cs;
+using RoadBuilderPrototype.AreaStructures;
+using RoadBuilderPrototype.Structures;
 
-namespace PrometSim.CarStructures;
+namespace RoadBuilderPrototype.CarStructures;
 
 public class Car(SpawnArea parent, (int w, int h) cell, (int i, int j) slot)
     : CarData, IDrawable {

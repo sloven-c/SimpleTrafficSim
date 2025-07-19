@@ -1,10 +1,10 @@
-﻿using PrometSim.AreaStructures;
-using PrometSim.RoadStructures;
-using PrometSim.Structures;
-using Raylib_cs;
+﻿using Raylib_cs;
+using RoadBuilderPrototype.AreaStructures;
+using RoadBuilderPrototype.RoadStructures;
+using RoadBuilderPrototype.Structures;
 using Color = Raylib_cs.Color;
 
-namespace PrometSim;
+namespace RoadBuilderPrototype;
 
 internal class Program {
     private static void Main() {

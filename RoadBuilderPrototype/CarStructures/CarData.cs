@@ -1,4 +1,4 @@
-namespace PrometSim.CarStructures;
+namespace RoadBuilderPrototype.CarStructures;
 
 public class CarData {
     protected int CarWidth => 13;

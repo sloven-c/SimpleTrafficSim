@@ -6,25 +6,21 @@ namespace PrometSim.RoadStructures;
 
 public class RoadManager : RoadData, IDrawable {
     private const float Buffer = RoadThickness * GameData.Scale / 2f;
+
+    // test mode todo remove
+    private readonly List<Vector2> _bezierPoints = [];
     private readonly List<Node> _nodes = [];
 
     // todo given so many classes use draw ponder if we could use something with interfaces
     private readonly List<Road> _roads = [];
-
-    // test mode todo remove
-    private readonly List<Vector2> _bezierPoints = [];
     private bool _deleteMode;
     private bool _nodeMode;
 
     private int? _selectedRoad;
-    private bool _testMode;
 
     private static float MinDistance => GameData.Size.width / 25f;
 
     public void Draw() {
-        foreach (var coord in _bezierPoints) {
-            Raylib.DrawCircleV(coord, 5f, Color.Black);
-        }
         foreach (var road in _roads) road.Draw();
 
         if (!_nodeMode) return;
@@ -81,16 +77,12 @@ public class RoadManager : RoadData, IDrawable {
     }
 
     private void TestFunc() {
-        if (!_testMode) return;
-
         if (_bezierPoints.Count == 3) {
             Raylib.DrawSplineBezierQuadratic(_bezierPoints.ToArray(), 3, 1f, Color.Black);
             return;
         }
 
-        if (Raylib.IsMouseButtonReleased(MouseButton.Left)) {
-            _bezierPoints.Add(Raylib.GetMousePosition());
-        }
+        if (Raylib.IsMouseButtonReleased(MouseButton.Left)) _bezierPoints.Add(Raylib.GetMousePosition());
     }
 
     private bool CanCreateNode(Vector2 location, Node? nodeToSkip) {
@@ -144,12 +136,8 @@ public class RoadManager : RoadData, IDrawable {
         else if (Raylib.IsKeyReleased(KeyboardKey.N)) {
             _nodeMode = !_nodeMode;
         }
-        else if (Raylib.IsKeyReleased(KeyboardKey.T)) {
-            _testMode = !_testMode;
-        }
 
         if (Raylib.IsMouseButtonReleased(MouseButton.Left)) {
-            if (_testMode) return;
             if (_deleteMode) {
                 if (_selectedRoad == null) return;
                 _roads.RemoveAt(_selectedRoad.Value);
